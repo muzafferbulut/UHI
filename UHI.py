@@ -21,13 +21,13 @@ def TB(Llambda, K1, K2):
             BrightnessT[i,j] = K2/(math.log((K1/pix)+1)) -273.15
     return BrightnessT
 
-def calcNDVI(im):
+def CalcNDVI(im):
     NIR = im[constant['bandNIR'],:,:]
     RED = im[constant['bandRED'],:,:]
     NDVI = (NIR-RED)/(NIR+RED)
     return NDVI
 
-def calcPv(NDVI):
+def CalcPv(NDVI):
     VegetationRatio = np.zeros((x,y))
     minNDVI = np.min(NDVI)
     maxNDVI = np.max(NDVI)
@@ -52,7 +52,7 @@ def T(Tb,emi):
             T[i,j] = Tb[i,j]/(1+(Tb[i,j]/c2)*la*math.log(emi[i,j]))
     return T
 
-def calcHFI(T):
+def CalcHFI(T):
     HFI = np.zeros((x,y))
     minT = np.min(T)
     maxT = np.max(T)
@@ -79,7 +79,7 @@ def HeatLevel(pix):
     else:
         print(pix)
 
-def calcUHI(HFI):
+def CalcUHI(HFI):
     UHI = np.zeros((x,y))
     for i in range(x):
         for j in range(y):
@@ -103,17 +103,17 @@ SpectralRadiance = Llambda(imageThermal,constant['ML'],constant['AL'])
 
 BrighnessTemperature = TB(SpectralRadiance, constant['K1'],constant['K2'])
 
-NDVI = calcNDVI(image)
+NDVI = CalcNDVI(image)
 
-Pv = calcPv(NDVI)
+Pv = CalcPv(NDVI)
 
 Emissivite = Emi(Pv)
 
 LST = T(BrighnessTemperature,Emissivite)
 
-HFI = calcHFI(LST)
+HFI = CalcHFI(LST)
 
-UHI = calcUHI(HFI)
+UHI = CalcUHI(HFI)
 
 pyplot.imshow(UHI)
 
