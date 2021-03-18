@@ -86,7 +86,7 @@ def calcUHI(HFI):
             UHI[i,j] = HeatLevel(HFI[i,j])
     return UHI
 
-# read the data
+# read the constants
 with open("constants.json", "r") as constants:
     constant = json.load(constants)
 
